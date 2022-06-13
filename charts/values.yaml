@@ -1,0 +1,48 @@
+# Default values for chart
+
+deploy:
+    namespace: #{stage}#-#{namespace}#
+    replicas: #{minReplicas}#
+    type: #{type}#
+    ambiente: #{stage}#
+    area_negocio: #{namespace}#
+    area_ti: #{area_ti}#
+    pais: #{pais}#
+    acrServer: #{ecr}#
+    imageTag: #{imageTag}#
+    cpulimits: #{cpulimits}#
+    memorylimits: #{memorylimits}#
+    maxReplicas: #{maxReplicas}#
+    minReplicas: #{minReplicas}#
+    path_mountPath: /data1/logs/#{stage}#-#{namespace}#/#{nombre}#/
+    path_hostPath: /data1/logs/#{stage}#-#{namespace}#/#{nombre}#/
+    imagePullSecrets: #{imagePullSecrets}#
+
+service:
+    port: #{port}#
+    type: ClusterIP
+    protocol: TCP
+
+secrets:
+    elk_pass: #{elk.pass}#
+
+config:
+    name: conf
+    RABBIT_ELK: {
+        "log_dir": /data1/logs/#{stage}#-#{namespace}#/#{nombre}#/
+        ,"error_dir": /data1/logs/#{stage}#-#{namespace}#/#{nombre}#/
+        ,"operation": "SUBSCRIBER"
+        ,"type": "OUT"
+        ,"domainName": #{stage}#-#{namespace}#
+        ,"message_name": #{nombre}#
+        ,"host": #{elk.host}#
+        ,"port": #{elk.port}#
+        ,"virtual_host": #{elk.virtualHost}#
+        ,"username": #{elk.username}#
+        ,"password": ""
+        ,"routing_key": #{elk.routingKey}#
+        ,"exchange": #{elk.exchange}#
+        ,"connection_name": #{nombre}#
+        ,"time_sleep": 20
+        ,"exchange_type": "topic"
+    }
